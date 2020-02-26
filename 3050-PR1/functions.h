@@ -47,7 +47,7 @@ void addFriends(Group table, String one, String two);
 int personExists(Group table, String name);
 int peopleExist(Group table, int count, ...);
 void addFriend(People person1, People person2);
-
+String splitString(String buffer);
 
 
 

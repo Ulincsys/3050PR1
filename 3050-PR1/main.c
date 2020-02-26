@@ -21,11 +21,9 @@ void printMenu()  {
 }
 
 void loop() {
-	setvbuf(stdout, NULL, _IONBF, 0);
+	//setvbuf(stdout, NULL, _IONBF, 0);
 	String buffer = makeArray(BUFFER_SIZE, NULL, sizeof(char));
 	Group table = makeArray(PRIME_TABLE_SIZE, NULL, sizeof(People));
-
-
 
 	while(1) {
 		input(buffer, "Enter an option:\n");
@@ -35,12 +33,27 @@ void loop() {
 				tableAdd(table, person);
 				break;
 			} case 'F': {
+				String second = splitString(buffer + 2);
+				if(!second || !peopleExist(table, 2, buffer + 2, second)) {
+					printf("Invalid input for command: U\n");
+				} else if(!areFriends(table, buffer + 2, second)){
+					addFriends(table, buffer + 2, second);
+				} else {
+					printf("%s and %s are already friends\n", buffer + 2, second);
+				}
 				break;
 			} case 'U': {
 				break;
 			} case 'L': {
 				break;
 			} case 'Q': {
+				String second = splitString(buffer + 2);
+				if(!second || !peopleExist(table, 2, buffer + 2, second)) {
+					printf("Invalid input for command: Q\n");
+				} else {
+					printf("%s and %s are %sfriends\n", buffer + 2, second,
+							(areFriends(table, buffer + 2, second)) ? "" : "not ");
+				}
 				break;
 			} case 'X': {
 				return;
@@ -51,7 +64,7 @@ void loop() {
 				printf("Person %s exists: %s\n", buffer + 2, (getPerson(table, buffer + 2)) ? "True" : "False");
 				break;
 			} default: {
-				puts("Invalid input, please try again.");
+				puts("Invalid input, please try again.\n");
 			}
 		}
 	}

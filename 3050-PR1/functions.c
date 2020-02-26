@@ -1,4 +1,5 @@
 #include "functions.h"
+#include <stdarg.h>
 
 void tableAdd(Group table, People person) {
 	int hash = strHash(person->name);
@@ -8,18 +9,39 @@ void tableAdd(Group table, People person) {
 	table[hash] = person;
 }
 
+String splitString(String buffer) {
+	for(int i = 0; (i < BUFFER_SIZE - 2) && (buffer[i] != 0); ++i) {
+		if(buffer[i] == ' ') {
+			buffer[i] = 0;
+			return (buffer + (++i));
+		}
+	}
+	return NULL;
+}
 
 int peopleExist(Group table, int count, ...) {
-	Strings people = (Strings)(&count);
+	va_list args;
+	va_start(args, count);
+	while(count-- > 0) {
+		String name = va_arg(args, String);
+		if(!personExists(table, name)) {
+			va_end(args);
+			return 0;
+		}
+	}
+	va_end(args);
+	return 1;
+}
+/*// Previous non-portable version of this function with varargs implemented manually.
+ * Strings people = (Strings)(&count);
 	++people;
-	printPersonTable(table);
 	while(count-- > 0) {
 		if(!personExists(table, people[count])) {
 			return 0;
 		}
 	}
 	return 1;
-}
+ */
 
 int personExists(Group table, String name) {
 	return (getPerson(table, name) != NULL);
@@ -29,8 +51,8 @@ void addFriends(Group table, String one, String two) {
 	if(!areFriends(table, one, two) && peopleExist(table, 2, one, two)) {
 		People person1 = getPerson(table, one);
 		People person2 = getPerson(table, two);
-		addFriend(table, person1, person2);
-		addFriend(table, person2, person1);
+		addFriend(person1, person2);
+		addFriend(person2, person1);
 	}
 }
 
@@ -60,10 +82,9 @@ int areFriends(Group table, String one, String two) {
 	if(!peopleExist(table, 2, one, two)) {
 		return 0;
 	}
-
 	Friends cursor = getFriends(table, one);
 	while(cursor) {
-		if(compareName(one, cursor->person->name)) {
+		if(compareName(two, cursor->person->name)) {
 			return 1;
 		}
 		cursor = cursor->next;
@@ -125,9 +146,6 @@ People getPerson(Group table, String name) {
 
 	return NULL;
 }
-
-
-
 
 /* Accepts a hash table and a String name, and returns a Friend pointer to the given person's
  * Friend list. Will return NULL if the given person does not exist in the table. Makes a call
