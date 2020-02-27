@@ -1,7 +1,63 @@
 #include "functions.h"
 #include <stdarg.h>
 
+void remFriends(Group table, String one, String two) {
+	if(areFriends(table, one, two) && peopleExist(table, 2, one, two)) {
+		People person1 = getPerson(table, one);
+		People person2 = getPerson(table, two);
+		remFriend(person1, person2);
+		remFriend(person2, person1);
+	}
+}
+
+void remFriend(People person1, People person2) {
+	Friends cursor = person1->friends;
+	if(cursor && compareName(person2->name, cursor->person->name)) {
+		person1->friends = cursor->next;
+		free(cursor);
+		return;
+	}
+	Friends temp = cursor;
+	while(cursor->next) {
+		cursor = cursor->next;
+		if(compareName(person2->name, cursor->person->name)) {
+			temp->next = cursor->next;
+			free(cursor);
+			return;
+		}
+		temp = cursor;
+	}
+}
+
+void printFriends(Group table, String name) {
+	People person = getPerson(table, name);
+	if(!person) {
+		return;
+	}
+	Friends cursor = person->friends;
+	if(cursor) {
+		printf("%s's friends: ", name);
+	} else {
+		printf("%s has no friends.\n", name);
+		return;
+	}
+	while(cursor) {
+		printf("%s%s", cursor->person->name, cursor->next ? ", " : "\n");
+		cursor = cursor->next;
+	}
+}
+
+/* Accepts a hash table and a Person struct pointer, and adds it to the hash
+ * table by string hash on the name. Will not add a person who is already added
+ * to the table.
+ * Parameters:
+ * Group table		- A hash table of size PRIME_TABLE_SIZE
+ * People person	- A pointer to a Person struct to add to the table
+ */
 void tableAdd(Group table, People person) {
+	if(personExists(table, person->name)) {
+		return;
+	}
 	int hash = strHash(person->name);
 	if(table[hash]) {
 		person->next = table[hash];
@@ -9,6 +65,13 @@ void tableAdd(Group table, People person) {
 	table[hash] = person;
 }
 
+/* Accepts a String buffer containing two String names separated by a space.
+ * Will replace the space in the middle of the buffer with a null terminator
+ * character and return a pointer to the beginning of the second name. Will
+ * return NULL if there is not a space before the end of the string.
+ * Parameters:
+ * String buffer	- String Buffer containing two names separated by a space.
+ */
 String splitString(String buffer) {
 	for(int i = 0; (i < BUFFER_SIZE - 2) && (buffer[i] != 0); ++i) {
 		if(buffer[i] == ' ') {
@@ -19,6 +82,14 @@ String splitString(String buffer) {
 	return NULL;
 }
 
+/* Accepts a hash table, an integer and a list of String names and determines
+ * if at least one of them does not exist. Will return 1 if all people exist,
+ * else 0 if at least one does not.
+ * Parameters:
+ * Group table		- A hash table of size PRIME_TABLE_SIZE
+ * int count		- An integer representing the number of names to check
+ * String ...		- A list of String  names of size count
+ */
 int peopleExist(Group table, int count, ...) {
 	va_list args;
 	va_start(args, count);
@@ -43,6 +114,12 @@ int peopleExist(Group table, int count, ...) {
 	return 1;
  */
 
+/* Accepts a hash table and a String name, and uses getPerson() to determine if the person
+ * name given is in the table.
+ * Parameters:
+ * Group table		- A hash table of size PRIME_TABLE_SIZE
+ * String name		- A name String with no extraneous characters
+ */
 int personExists(Group table, String name) {
 	return (getPerson(table, name) != NULL);
 }

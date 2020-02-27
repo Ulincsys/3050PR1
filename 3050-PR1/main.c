@@ -33,26 +33,39 @@ void loop() {
 				tableAdd(table, person);
 				break;
 			} case 'F': {
-				String second = splitString(buffer + 2);
-				if(!second || !peopleExist(table, 2, buffer + 2, second)) {
+				String second = splitString(buffer + COMMAND_OFFSET);
+				if(!second || !peopleExist(table, 2, buffer + COMMAND_OFFSET, second)) {
 					printf("Invalid input for command: U\n");
-				} else if(!areFriends(table, buffer + 2, second)){
-					addFriends(table, buffer + 2, second);
+				} else if(!areFriends(table, buffer + COMMAND_OFFSET, second)){
+					addFriends(table, buffer + COMMAND_OFFSET, second);
 				} else {
-					printf("%s and %s are already friends\n", buffer + 2, second);
+					printf("%s and %s are already friends\n", buffer + COMMAND_OFFSET, second);
 				}
 				break;
 			} case 'U': {
+				String second = splitString(buffer + COMMAND_OFFSET);
+				if(!second || !peopleExist(table, 2, buffer + COMMAND_OFFSET, second)) {
+					printf("Invalid input for command: Q\n");
+				} else if(areFriends(table, buffer + COMMAND_OFFSET, second)) {
+					remFriends(table, buffer + COMMAND_OFFSET, second);
+				} else {
+					printf("%s and %s are not friends\n", buffer + COMMAND_OFFSET, second);
+				}
 				break;
 			} case 'L': {
+				if(personExists(table, buffer + COMMAND_OFFSET)) {
+					printFriends(table, buffer + COMMAND_OFFSET);
+				} else {
+					printf("Person %s does not exist.\n", buffer + COMMAND_OFFSET);
+				}
 				break;
 			} case 'Q': {
-				String second = splitString(buffer + 2);
-				if(!second || !peopleExist(table, 2, buffer + 2, second)) {
+				String second = splitString(buffer + COMMAND_OFFSET);
+				if(!second || !peopleExist(table, 2, buffer + COMMAND_OFFSET, second)) {
 					printf("Invalid input for command: Q\n");
 				} else {
-					printf("%s and %s are %sfriends\n", buffer + 2, second,
-							(areFriends(table, buffer + 2, second)) ? "" : "not ");
+					printf("%s and %s are %sfriends\n", buffer + COMMAND_OFFSET, second,
+							(areFriends(table, buffer + COMMAND_OFFSET, second)) ? "" : "not ");
 				}
 				break;
 			} case 'X': {
@@ -61,7 +74,7 @@ void loop() {
 				printPersonTable(table);
 				break;
 			} case 'Z': { // check that a person exists
-				printf("Person %s exists: %s\n", buffer + 2, (getPerson(table, buffer + 2)) ? "True" : "False");
+				printf("Person %s exists: %s\n", buffer + 2, (getPerson(table, buffer + COMMAND_OFFSET)) ? "True" : "False");
 				break;
 			} default: {
 				puts("Invalid input, please try again.\n");

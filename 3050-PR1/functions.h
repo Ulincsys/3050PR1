@@ -5,6 +5,7 @@
 #define BUFFER_SIZE 204
 #define PRIME_MULTIPLIER 137
 #define PRIME_TABLE_SIZE 109
+#define COMMAND_OFFSET 2
 
 typedef struct Person Person;
 typedef struct Friend Friend;
@@ -48,6 +49,9 @@ int personExists(Group table, String name);
 int peopleExist(Group table, int count, ...);
 void addFriend(People person1, People person2);
 String splitString(String buffer);
+void remFriends(Group table, String one, String two);
+void remFriend(People person1, People person2);
+void printFriends(Group table, String name);
 
 
 
