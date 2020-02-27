@@ -21,7 +21,7 @@ void printMenu()  {
 }
 
 void loop() {
-	//setvbuf(stdout, NULL, _IONBF, 0);
+	setvbuf(stdout, NULL, _IONBF, 0);
 	String buffer = makeArray(BUFFER_SIZE, NULL, sizeof(char));
 	Group table = makeArray(PRIME_TABLE_SIZE, NULL, sizeof(People));
 

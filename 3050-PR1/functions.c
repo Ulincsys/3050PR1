@@ -47,6 +47,13 @@ int personExists(Group table, String name) {
 	return (getPerson(table, name) != NULL);
 }
 
+/* Accepts two String names, adds them as friends if they both exist and are not already friends.
+ * Makes a call to areFriends(), getPerson(), peopleExist() and addFriend().
+ * Parameters:
+ * Group table		- A hash table of size PRIME_TABLE_SIZE
+ * String one		- A name String with no extraneous characters
+ * String two		- A name String with no extraneous characters
+ */
 void addFriends(Group table, String one, String two) {
 	if(!areFriends(table, one, two) && peopleExist(table, 2, one, two)) {
 		People person1 = getPerson(table, one);
