@@ -1,6 +1,13 @@
 #include "functions.h"
 #include <stdarg.h>
 
+/* Accepts two String names, removes them as friends if they both exist and are friends.
+ * Makes a call to areFriends(), getPerson(), peopleExist() and remFriend().
+ * Parameters:
+ * Group table		- A hash table of size PRIME_TABLE_SIZE
+ * String one		- A name String with no extraneous characters
+ * String two		- A name String with no extraneous characters
+ */
 void remFriends(Group table, String one, String two) {
 	if(areFriends(table, one, two) && peopleExist(table, 2, one, two)) {
 		People person1 = getPerson(table, one);
@@ -10,6 +17,12 @@ void remFriends(Group table, String one, String two) {
 	}
 }
 
+/* Accepts two Person struct pointers and removes the second person from the
+ * friends list of the first person if they are friends.
+ * Parameters
+ * People person1	- A pointer to a Person struct
+ * People person2	- A pointer to a Person struct
+ */
 void remFriend(People person1, People person2) {
 	Friends cursor = person1->friends;
 	if(cursor && compareName(person2->name, cursor->person->name)) {
@@ -29,6 +42,12 @@ void remFriend(People person1, People person2) {
 	}
 }
 
+/* Accepts a hash table and a String name, and prints the friends list of
+ * the given person if found.
+ * Parameters:
+ * Group table		- A hash table of size PRIME_TABLE_SIZE
+ * String name		- A name String with no extraneous characters
+ */
 void printFriends(Group table, String name) {
 	People person = getPerson(table, name);
 	if(!person) {
@@ -48,7 +67,7 @@ void printFriends(Group table, String name) {
 }
 
 /* Accepts a hash table and a Person struct pointer, and adds it to the hash
- * table by string hash on the name. Will not add a person who is already added
+ * table by the string hash of the name. Will not add a person who is already added
  * to the table.
  * Parameters:
  * Group table		- A hash table of size PRIME_TABLE_SIZE

@@ -29,13 +29,17 @@ void loop() {
 		input(buffer, "Enter an option:\n");
 		switch(*buffer) {
 			case 'P': {
+				if(personExists(table, buffer + COMMAND_OFFSET)) {
+					printf("Person %s already exists.\n", buffer + COMMAND_OFFSET);
+					break;
+				}
 				People person = makePerson(buffer);
 				tableAdd(table, person);
 				break;
 			} case 'F': {
 				String second = splitString(buffer + COMMAND_OFFSET);
 				if(!second || !peopleExist(table, 2, buffer + COMMAND_OFFSET, second)) {
-					printf("Invalid input for command: U\n");
+					printf("Invalid input for command: F\n");
 				} else if(!areFriends(table, buffer + COMMAND_OFFSET, second)){
 					addFriends(table, buffer + COMMAND_OFFSET, second);
 				} else {
@@ -45,7 +49,7 @@ void loop() {
 			} case 'U': {
 				String second = splitString(buffer + COMMAND_OFFSET);
 				if(!second || !peopleExist(table, 2, buffer + COMMAND_OFFSET, second)) {
-					printf("Invalid input for command: Q\n");
+					printf("Invalid input for command: U\n");
 				} else if(areFriends(table, buffer + COMMAND_OFFSET, second)) {
 					remFriends(table, buffer + COMMAND_OFFSET, second);
 				} else {
