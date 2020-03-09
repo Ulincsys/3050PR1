@@ -1,6 +1,42 @@
 #include "functions.h"
 #include <stdarg.h>
 
+/*
+ */
+void freeHashTable(Group table) {
+	int index = -1;
+	while(++index < PRIME_TABLE_SIZE) {
+		if(table[index]) {
+			People cursor = table[index]->next;
+			People temp = table[index];
+			while(cursor) {
+				printf("Freeing: %s\n", temp->name);
+				remAllFriends(temp);
+				free(temp);
+				temp = cursor;
+				cursor = cursor->next;
+			}
+			remAllFriends(temp);
+			free(temp);
+		}
+	}
+	freeArray(table);
+}
+
+/* Removes all the friend relationships of the given person.
+ * Parameters:
+ * People person	- A pointer to a Person struct
+ */
+void remAllFriends(People person) {
+	Friends cursor = person->friends;
+	while(cursor) {
+		People temp = cursor->person;
+		cursor = cursor->next;
+		remFriend(person, temp);
+		remFriend(temp, person);
+	}
+}
+
 /* Accepts two String names, removes them as friends if they both exist and are friends.
  * Makes a call to areFriends(), getPerson(), peopleExist() and remFriend().
  * Parameters:
@@ -311,7 +347,7 @@ void printName(People person) {
  */
 void input(String buffer, String message) {
 	printf("%s", message);
-	fgets(buffer, BUFFER_SIZE, stdin);
+	fgets(buffer, BUFFER_SIZE, (cmdIn) ? cmdIn : stdin);
 	for(int i = 0; i < BUFFER_SIZE; ++i) {
 		if((buffer[i] == '\n') || (buffer[i] == '\r')) {
 			buffer[i] = 0;

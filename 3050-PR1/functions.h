@@ -7,6 +7,8 @@
 #define PRIME_TABLE_SIZE 109
 #define COMMAND_OFFSET 2
 
+FILE *cmdIn;
+
 typedef struct Person Person;
 typedef struct Friend Friend;
 typedef Friend* Friends;
@@ -52,6 +54,8 @@ String splitString(String buffer);
 void remFriends(Group table, String one, String two);
 void remFriend(People person1, People person2);
 void printFriends(Group table, String name);
+void freeHashTable(Group table);
+void remAllFriends(People person);
 
 
 

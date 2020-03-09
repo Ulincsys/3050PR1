@@ -7,6 +7,8 @@ int main(void) {
 	puts("Welcome to the Mini Facebook Simulator!");
 	printMenu();
 
+	cmdIn = fopen("commands.txt", "r");
+
 	loop();
 	return 0;
 }
@@ -28,7 +30,7 @@ void loop() {
 	while(1) {
 		input(buffer, "Enter an option:\n");
 		switch(*buffer) {
-			case 'P': {
+			case 'P': { // add a person to the database
 				if(personExists(table, buffer + COMMAND_OFFSET)) {
 					printf("Person %s already exists.\n", buffer + COMMAND_OFFSET);
 					break;
@@ -36,7 +38,7 @@ void loop() {
 				People person = makePerson(buffer);
 				tableAdd(table, person);
 				break;
-			} case 'F': {
+			} case 'F': { // add a relation between two people
 				String second = splitString(buffer + COMMAND_OFFSET);
 				if(!second || !peopleExist(table, 2, buffer + COMMAND_OFFSET, second)) {
 					printf("Invalid input for command: F\n");
@@ -46,7 +48,7 @@ void loop() {
 					printf("%s and %s are already friends\n", buffer + COMMAND_OFFSET, second);
 				}
 				break;
-			} case 'U': {
+			} case 'U': { // remove a relation between two people
 				String second = splitString(buffer + COMMAND_OFFSET);
 				if(!second || !peopleExist(table, 2, buffer + COMMAND_OFFSET, second)) {
 					printf("Invalid input for command: U\n");
@@ -56,14 +58,14 @@ void loop() {
 					printf("%s and %s are not friends\n", buffer + COMMAND_OFFSET, second);
 				}
 				break;
-			} case 'L': {
+			} case 'L': { // list the friends of a person
 				if(personExists(table, buffer + COMMAND_OFFSET)) {
 					printFriends(table, buffer + COMMAND_OFFSET);
 				} else {
 					printf("Person %s does not exist.\n", buffer + COMMAND_OFFSET);
 				}
 				break;
-			} case 'Q': {
+			} case 'Q': { // query if two people are friends
 				String second = splitString(buffer + COMMAND_OFFSET);
 				if(!second || !peopleExist(table, 2, buffer + COMMAND_OFFSET, second)) {
 					printf("Invalid input for command: Q\n");
@@ -72,7 +74,9 @@ void loop() {
 							(areFriends(table, buffer + COMMAND_OFFSET, second)) ? "" : "not ");
 				}
 				break;
-			} case 'X': {
+			} case 'X': { // exit the program
+				freeHashTable(table);
+				freeArray(buffer);
 				return;
 			} case 'C': { // print the table
 				printPersonTable(table);
@@ -80,7 +84,7 @@ void loop() {
 			} case 'Z': { // check that a person exists
 				printf("Person %s exists: %s\n", buffer + 2, (getPerson(table, buffer + COMMAND_OFFSET)) ? "True" : "False");
 				break;
-			} default: {
+			} default: { // input did not make sense
 				puts("Invalid input, please try again.\n");
 			}
 		}
