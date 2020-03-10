@@ -77,6 +77,8 @@ void loop() {
 			} case 'X': { // exit the program
 				freeHashTable(table);
 				freeArray(buffer);
+				if(cmdIn)
+					fclose(cmdIn);
 				return;
 			} case 'C': { // print the table
 				printPersonTable(table);

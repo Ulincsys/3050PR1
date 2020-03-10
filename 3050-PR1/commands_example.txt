@@ -1,0 +1,13 @@
+P Helen
+P Janet
+P Jack
+P Mark
+P Daniel
+P Derek
+P Margaret
+F Helen Janet
+F Helen Jack
+F Jack Derek
+F Helen Daniel
+F Mark Margaret
+X

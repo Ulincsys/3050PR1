@@ -1,7 +1,10 @@
 #include "functions.h"
 #include <stdarg.h>
 
-/*
+/* Accepts a hash table of People, frees all friend struct pointers and people pointers,
+ * then frees the table itself using the freeArray() function. Calls remAllFriends().
+ * Parameters:
+ * Group table		- A hash table of size PRIME_TABLE_SIZE
  */
 void freeHashTable(Group table) {
 	int index = -1;
@@ -23,7 +26,8 @@ void freeHashTable(Group table) {
 	freeArray(table);
 }
 
-/* Removes all the friend relationships of the given person.
+/* Accepts a Person struct pointer and removes all the friend relationships of the given person
+ * using the remFriend() function.
  * Parameters:
  * People person	- A pointer to a Person struct
  */
@@ -337,10 +341,11 @@ void printName(People person) {
 	printf("%s", person->name);
 }
 
-/* Accepts a buffer String and an output message, then reads STDIN into the buffer String provided.
+/* Accepts a buffer String and an output message, then reads into the buffer String provided.
  * Will only read in a string of length < BUFFER_SIZE, and does not implicitly add a newline after
  * the message String provided. Will overwrite any characters already in the buffer String. Replaces
- * return characters with null terminators.
+ * return characters with null terminators. Will attempt to read from a FILE pointer allocated using
+ * fopen("commands.txt", "r"), and will read from stdin if that file was not found.
  * Parameters:
  * String buffer	- String Buffer to write to from STDIN, must be at least as long as BUFFER_SIZE
  * String message	- String message to be printed during input, is not implicitly followed by newline.
