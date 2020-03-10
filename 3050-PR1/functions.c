@@ -369,7 +369,7 @@ void input(String buffer, String message) {
 People makePerson(String buffer) {
 	People person = malloc(sizeof(Person));
 	if(!person) { return NULL; }
-	setName(person, buffer + 2);
+	setName(person, buffer + COMMAND_OFFSET);
 	person->friends = NULL;
 	person->next = NULL;
 	return person;

@@ -84,7 +84,7 @@ void loop() {
 				printPersonTable(table);
 				break;
 			} case 'Z': { // check that a person exists
-				printf("Person %s exists: %s\n", buffer + 2, (getPerson(table, buffer + COMMAND_OFFSET)) ? "True" : "False");
+				printf("Person %s exists: %s\n", buffer + COMMAND_OFFSET, (getPerson(table, buffer + COMMAND_OFFSET)) ? "True" : "False");
 				break;
 			} default: { // input did not make sense
 				puts("Invalid input, please try again.\n");
