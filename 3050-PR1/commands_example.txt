@@ -9,5 +9,16 @@ F Helen Janet
 F Helen Jack
 F Jack Derek
 F Helen Daniel
+F Daniel Margaret
 F Mark Margaret
+Q Daniel Mark
+U Daniel Mark
+L Helen
+L Daniel
+Q Daniel Helen
+Q Helen Daniel
+U Helen Daniel
+L Helen
+Q Daniel Helen
+Q Helen Daniel
 X
