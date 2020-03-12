@@ -358,8 +358,13 @@ void input(String buffer, String message) {
 			buffer[i] = 0;
 		}
 	}
-	if(cmdIn)
+	if(cmdIn) {
+		if(feof(cmdIn)) {
+			fclose(cmdIn);
+			cmdIn = NULL;
+		}
 		puts(buffer);
+	}
 }
 
 /* Accepts a buffer String and generates a pointer to a Person struct with the given name.
